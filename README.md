@@ -788,6 +788,6 @@ Ada pertanyaan? [Open an issue](https://github.com/fachriramdhan/stok-management
 
 **[⬆ back to top](#-sistem-manajemen-stok--tools---digital-transformation-40)**
 
-Made with ❤️ by Digital Transformation 4.0 Team
+Made with ❤️ by fachriramdhan
 
 </div>
