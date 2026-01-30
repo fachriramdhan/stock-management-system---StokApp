@@ -751,9 +751,9 @@ SOFTWARE.
 ## 👨‍💻 Author
 
 **Your Name**
-- GitHub: [@yourusername](https://github.com/yourusername)
-- LinkedIn: [Your LinkedIn](https://linkedin.com/in/yourprofile)
-- Email: your.email@example.com
+- GitHub: [@fachriramdhan](https://github.com/fachriramdhan)
+- LinkedIn: [fachriramdhan](https://linkedin.com/in/fachriramdhan)
+- Email: fachriramdhan04@gmail.com
 
 ---
 
@@ -769,10 +769,10 @@ SOFTWARE.
 
 ## 📊 Project Statistics
 
-![GitHub repo size](https://img.shields.io/github/repo-size/username/stok-management-system)
-![GitHub contributors](https://img.shields.io/github/contributors/username/stok-management-system)
-![GitHub stars](https://img.shields.io/github/stars/username/stok-management-system?style=social)
-![GitHub forks](https://img.shields.io/github/forks/username/stok-management-system?style=social)
+![GitHub repo size](https://img.shields.io/github/repo-size/fachriramdhan/stok-management-system---StokApp)
+![GitHub contributors](https://img.shields.io/github/contributors/fachriramdhan/stok-management-system---StokApp)
+![GitHub stars](https://img.shields.io/github/stars/fachriramdhan/stok-management-system---StokApp?style=social)
+![GitHub forks](https://img.shields.io/github/forks/fachriramdhan/stok-management-system---StokApp?style=social)
 
 ---
 
@@ -780,7 +780,7 @@ SOFTWARE.
 
 Jika proyek ini membantu Anda, berikan ⭐️ di GitHub!
 
-Ada pertanyaan? [Open an issue](https://github.com/username/stok-management-system/issues/new)
+Ada pertanyaan? [Open an issue](https://github.com/fachriramdhan/stok-management-system---StokApp/issues/new)
 
 ---
 
