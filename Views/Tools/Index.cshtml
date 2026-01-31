@@ -1,0 +1,166 @@
+@model IEnumerable<StokApp.Models.Tools>
+@{
+    ViewData["Title"] = "Manajemen Tools";
+    ViewData["Subtitle"] = "Kelola aset tools kerja";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+<div class="flex justify-between items-center mb-6">
+    <div>
+        <h3 class="text-xl font-semibold text-gray-700">Daftar Tools</h3>
+        <p class="text-sm text-gray-500">Total: @Model.Count() tools</p>
+    </div>
+    @if (ViewBag.UserRole == "Admin")
+    {
+        <a href="@Url.Action("Create", "Tools")" class="btn-primary">
+            <i class="fas fa-plus mr-2"></i>Tambah Tools
+        </a>
+    }
+</div>
+
+<!-- Filter & Stats -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+    <div class="card bg-gradient-to-br from-green-500 to-green-600 text-white">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-green-100 text-sm">Available</p>
+                <h3 class="text-2xl font-bold">@Model.Count(t => t.Status == "Available")</h3>
+            </div>
+            <i class="fas fa-check-circle text-3xl text-green-200"></i>
+        </div>
+    </div>
+
+    <div class="card bg-gradient-to-br from-blue-500 to-blue-600 text-white">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-blue-100 text-sm">Dipakai</p>
+                <h3 class="text-2xl font-bold">@Model.Count(t => t.Status == "Dipakai")</h3>
+            </div>
+            <i class="fas fa-tools text-3xl text-blue-200"></i>
+        </div>
+    </div>
+
+    <div class="card bg-gradient-to-br from-red-500 to-red-600 text-white">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-red-100 text-sm">Rusak</p>
+                <h3 class="text-2xl font-bold">@Model.Count(t => t.Status == "Rusak")</h3>
+            </div>
+            <i class="fas fa-exclamation-triangle text-3xl text-red-200"></i>
+        </div>
+    </div>
+
+    <div class="card bg-gradient-to-br from-purple-500 to-purple-600 text-white">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-purple-100 text-sm">Total</p>
+                <h3 class="text-2xl font-bold">@Model.Count()</h3>
+            </div>
+            <i class="fas fa-toolbox text-3xl text-purple-200"></i>
+        </div>
+    </div>
+</div>
+
+<!-- Search -->
+<div class="card mb-6">
+    <div class="relative">
+        <input type="text" 
+               id="searchInput" 
+               placeholder="Cari tools..." 
+               class="input-field pl-10"
+               onkeyup="searchTable()">
+        <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+    </div>
+</div>
+
+<!-- Table -->
+<div class="card overflow-hidden">
+    <div class="overflow-x-auto">
+        <table class="w-full" id="toolsTable">
+            <thead class="bg-gradient-to-r from-purple-600 to-pink-600 text-white">
+                <tr>
+                    <th class="px-6 py-4 text-left text-sm font-semibold">No</th>
+                    <th class="px-6 py-4 text-left text-sm font-semibold">Nama Tools</th>
+                    <th class="px-6 py-4 text-left text-sm font-semibold">Jenis</th>
+                    <th class="px-6 py-4 text-left text-sm font-semibold">Plant</th>
+                    <th class="px-6 py-4 text-left text-sm font-semibold">Area</th>
+                    <th class="px-6 py-4 text-center text-sm font-semibold">Status</th>
+                    <th class="px-6 py-4 text-left text-sm font-semibold">Keterangan</th>
+                    @if (ViewBag.UserRole == "Admin")
+                    {
+                        <th class="px-6 py-4 text-center text-sm font-semibold">Aksi</th>
+                    }
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+                @{ int no = 1; }
+                @foreach (var item in Model)
+                {
+                    var statusClass = item.Status == "Available" ? "bg-green-100 text-green-800" :
+                                     item.Status == "Dipakai" ? "bg-blue-100 text-blue-800" :
+                                     "bg-red-100 text-red-800";
+                    var statusIcon = item.Status == "Available" ? "fa-check-circle" :
+                                    item.Status == "Dipakai" ? "fa-tools" :
+                                    "fa-exclamation-triangle";
+                    
+                    <tr class="table-row">
+                        <td class="px-6 py-4 text-sm text-gray-700">@no</td>
+                        <td class="px-6 py-4">
+                            <p class="font-semibold text-gray-800">@item.Nama</p>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-xs font-medium">
+                                @item.Jenis
+                            </span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-xs font-medium">
+                                @item.Plant.Nama
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 text-sm text-gray-700">
+                            @(item.Area?.Nama ?? "-")
+                        </td>
+                        <td class="px-6 py-4 text-center">
+                            <span class="@statusClass px-3 py-1 rounded-full text-xs font-semibold inline-flex items-center">
+                                <i class="fas @statusIcon mr-1"></i>@item.Status
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 text-sm text-gray-700">
+                            @(string.IsNullOrEmpty(item.Keterangan) ? "-" : item.Keterangan)
+                        </td>
+                        @if (ViewBag.UserRole == "Admin")
+                        {
+                            <td class="px-6 py-4">
+                                <div class="flex justify-center space-x-2">
+                                    <a href="@Url.Action("Edit", "Tools", new { id = item.Id })" 
+                                       class="bg-blue-500 text-white px-3 py-1 rounded-lg hover:bg-blue-600 transition-colors text-sm">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        }
+                    </tr>
+                    no++;
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    function searchTable() {
+        const input = document.getElementById('searchInput');
+        const filter = input.value.toLowerCase();
+        const table = document.getElementById('toolsTable');
+        const rows = table.getElementsByTagName('tr');
+
+        for (let i = 1; i < rows.length; i++) {
+            const row = rows[i];
+            const text = row.textContent.toLowerCase();
+            row.style.display = text.includes(filter) ? '' : 'none';
+        }
+    }
+</script>
+}

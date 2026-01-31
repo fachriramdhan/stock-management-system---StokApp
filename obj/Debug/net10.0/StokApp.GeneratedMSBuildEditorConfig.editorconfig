@@ -1,0 +1,143 @@
+is_global = true
+build_property.TargetFramework = net10.0
+build_property.TargetFrameworkIdentifier = .NETCoreApp
+build_property.TargetFrameworkVersion = v10.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = StokApp
+build_property.RootNamespace = StokApp
+build_property.ProjectDir = /Applications/MAMP/htdocs/StokManagementSystem/StokApp/
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 9.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = /Applications/MAMP/htdocs/StokManagementSystem/StokApp
+build_property._RazorSourceGeneratorDebug = 
+build_property.EffectiveAnalysisLevelStyle = 10.0
+build_property.EnableCodeStyleSeverity = 
+
+[/Applications/MAMP/htdocs/StokManagementSystem/StokApp/Views/Auth/AccessDenied.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXV0aC9BY2Nlc3NEZW5pZWQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Applications/MAMP/htdocs/StokManagementSystem/StokApp/Views/Auth/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXV0aC9Mb2dpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Applications/MAMP/htdocs/StokManagementSystem/StokApp/Views/Barang/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQmFyYW5nL0NyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Applications/MAMP/htdocs/StokManagementSystem/StokApp/Views/Barang/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQmFyYW5nL0VkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Applications/MAMP/htdocs/StokManagementSystem/StokApp/Views/Barang/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQmFyYW5nL0luZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Applications/MAMP/htdocs/StokManagementSystem/StokApp/Views/BarangKeluar/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQmFyYW5nS2VsdWFyL0NyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Applications/MAMP/htdocs/StokManagementSystem/StokApp/Views/BarangKeluar/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQmFyYW5nS2VsdWFyL0luZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Applications/MAMP/htdocs/StokManagementSystem/StokApp/Views/BarangMasuk/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQmFyYW5nTWFzdWsvQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Applications/MAMP/htdocs/StokManagementSystem/StokApp/Views/BarangMasuk/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQmFyYW5nTWFzdWsvSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Applications/MAMP/htdocs/StokManagementSystem/StokApp/Views/Dashboard/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRGFzaGJvYXJkL0luZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Applications/MAMP/htdocs/StokManagementSystem/StokApp/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9JbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Applications/MAMP/htdocs/StokManagementSystem/StokApp/Views/Home/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9Qcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Applications/MAMP/htdocs/StokManagementSystem/StokApp/Views/Kategori/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvS2F0ZWdvcmkvQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Applications/MAMP/htdocs/StokManagementSystem/StokApp/Views/Kategori/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvS2F0ZWdvcmkvRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Applications/MAMP/htdocs/StokManagementSystem/StokApp/Views/Kategori/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvS2F0ZWdvcmkvSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Applications/MAMP/htdocs/StokManagementSystem/StokApp/Views/Mismatch/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTWlzbWF0Y2gvSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Applications/MAMP/htdocs/StokManagementSystem/StokApp/Views/MonitoringStok/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvTW9uaXRvcmluZ1N0b2svSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Applications/MAMP/htdocs/StokManagementSystem/StokApp/Views/Plant/CreateArea.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUGxhbnQvQ3JlYXRlQXJlYS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Applications/MAMP/htdocs/StokManagementSystem/StokApp/Views/Plant/CreatePlant.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUGxhbnQvQ3JlYXRlUGxhbnQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Applications/MAMP/htdocs/StokManagementSystem/StokApp/Views/Plant/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUGxhbnQvSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Applications/MAMP/htdocs/StokManagementSystem/StokApp/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0Vycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Applications/MAMP/htdocs/StokManagementSystem/StokApp/Views/Shared/_DashboardLayout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19EYXNoYm9hcmRMYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Applications/MAMP/htdocs/StokManagementSystem/StokApp/Views/Shared/_Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19FcnJvci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Applications/MAMP/htdocs/StokManagementSystem/StokApp/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Applications/MAMP/htdocs/StokManagementSystem/StokApp/Views/Tools/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVG9vbHMvQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Applications/MAMP/htdocs/StokManagementSystem/StokApp/Views/Tools/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVG9vbHMvRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Applications/MAMP/htdocs/StokManagementSystem/StokApp/Views/Tools/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvVG9vbHMvSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Applications/MAMP/htdocs/StokManagementSystem/StokApp/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Applications/MAMP/htdocs/StokManagementSystem/StokApp/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Applications/MAMP/htdocs/StokManagementSystem/StokApp/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-56g3q8hqoz

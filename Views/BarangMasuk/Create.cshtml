@@ -1,0 +1,184 @@
+@model StokApp.Models.BarangMasuk
+@{
+    ViewData["Title"] = "Input Barang Masuk";
+    ViewData["Subtitle"] = "Catat barang yang masuk ke stok";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+<div class="max-w-4xl mx-auto">
+    <div class="card">
+        <div class="border-b border-gray-200 pb-4 mb-6">
+            <h3 class="text-xl font-bold text-gray-800">
+                <i class="fas fa-arrow-down text-green-600 mr-2"></i>Form Input Barang Masuk
+            </h3>
+            <p class="text-sm text-gray-500 mt-1">Pastikan semua data diisi dengan benar</p>
+        </div>
+
+        <form method="post" asp-action="Create" asp-controller="BarangMasuk" id="formBarangMasuk">
+            @Html.AntiForgeryToken()
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Barang -->
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        <i class="fas fa-box text-blue-600 mr-1"></i>
+                        Barang <span class="text-red-500">*</span>
+                    </label>
+                    <select asp-for="BarangId" class="input-field" required id="selectBarang">
+                        <option value="">-- Pilih Barang --</option>
+                        @foreach (var barang in ViewBag.Barangs)
+                        {
+                            <option value="@barang.Id" data-satuan="@barang.Satuan">
+                                @barang.Nama (@barang.Kategori.Nama) - Stok: @(barang.StokBarang?.TotalStok ?? 0)
+                            </option>
+                        }
+                    </select>
+                    <span asp-validation-for="BarangId" class="text-red-500 text-sm"></span>
+                </div>
+
+                <!-- Asal Barang -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        <i class="fas fa-shipping-fast text-blue-600 mr-1"></i>
+                        Asal Barang <span class="text-red-500">*</span>
+                    </label>
+                    <input type="text" 
+                           asp-for="AsalBarang" 
+                           class="input-field" 
+                           placeholder="Contoh: Pembelian, Vendor, Transfer Plant Barat"
+                           required>
+                    <span asp-validation-for="AsalBarang" class="text-red-500 text-sm"></span>
+                </div>
+
+                <!-- Tujuan Awal -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        <i class="fas fa-bullseye text-blue-600 mr-1"></i>
+                        Tujuan Awal <span class="text-red-500">*</span>
+                    </label>
+                    <select asp-for="TujuanAwal" class="input-field" required>
+                        <option value="">-- Pilih Tujuan --</option>
+                        <option value="Spare">Spare</option>
+                        <option value="Project Mesin Baru">Project Mesin Baru</option>
+                        <option value="Project Area Baru">Project Area Baru</option>
+                    </select>
+                    <span asp-validation-for="TujuanAwal" class="text-red-500 text-sm"></span>
+                </div>
+
+                <!-- Plant -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        <i class="fas fa-industry text-blue-600 mr-1"></i>
+                        Plant <span class="text-red-500">*</span>
+                    </label>
+                    <select asp-for="PlantId" class="input-field" required>
+                        <option value="">-- Pilih Plant --</option>
+                        @foreach (var plant in ViewBag.Plants)
+                        {
+                            <option value="@plant.Id">@plant.Nama</option>
+                        }
+                    </select>
+                    <span asp-validation-for="PlantId" class="text-red-500 text-sm"></span>
+                </div>
+
+                <!-- Lokasi Penyimpanan -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        <i class="fas fa-map-marker-alt text-blue-600 mr-1"></i>
+                        Lokasi Penyimpanan <span class="text-red-500">*</span>
+                    </label>
+                    <input type="text" 
+                           asp-for="LokasiPenyimpanan" 
+                           class="input-field" 
+                           placeholder="Contoh: Rak A-12, Gudang Utara, Box 5"
+                           required>
+                    <span asp-validation-for="LokasiPenyimpanan" class="text-red-500 text-sm"></span>
+                </div>
+
+                <!-- Jumlah -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        <i class="fas fa-calculator text-blue-600 mr-1"></i>
+                        Jumlah <span class="text-red-500">*</span>
+                    </label>
+                    <div class="relative">
+                        <input type="number" 
+                               asp-for="Jumlah" 
+                               class="input-field pr-20" 
+                               min="1"
+                               placeholder="0"
+                               required>
+                        <span id="satuanDisplay" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 font-semibold">
+                            pcs
+                        </span>
+                    </div>
+                    <span asp-validation-for="Jumlah" class="text-red-500 text-sm"></span>
+                </div>
+
+                <!-- Tanggal -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        <i class="fas fa-calendar text-blue-600 mr-1"></i>
+                        Tanggal <span class="text-red-500">*</span>
+                    </label>
+                    <input type="date" 
+                           asp-for="Tanggal" 
+                           class="input-field" 
+                           value="@DateTime.Now.ToString("yyyy-MM-dd")"
+                           required>
+                    <span asp-validation-for="Tanggal" class="text-red-500 text-sm"></span>
+                </div>
+
+                <!-- Keterangan -->
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        <i class="fas fa-comment text-blue-600 mr-1"></i>
+                        Keterangan
+                    </label>
+                    <textarea asp-for="Keterangan" 
+                              class="input-field" 
+                              rows="3"
+                              placeholder="Keterangan tambahan..."></textarea>
+                </div>
+            </div>
+
+            <!-- Info Box -->
+            <div class="mt-6 bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg">
+                <div class="flex items-start">
+                    <i class="fas fa-info-circle text-blue-500 mt-1 mr-3"></i>
+                    <div class="text-sm text-blue-800">
+                        <p class="font-semibold mb-1">Informasi Penting:</p>
+                        <ul class="list-disc list-inside space-y-1">
+                            <li>Stok akan otomatis bertambah setelah data disimpan</li>
+                            <li>Tujuan awal akan digunakan untuk validasi mismatch</li>
+                            <li>Pastikan lokasi penyimpanan dicatat dengan jelas</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="flex space-x-4 mt-6 pt-6 border-t border-gray-200">
+                <button type="submit" class="btn-primary flex-1">
+                    <i class="fas fa-save mr-2"></i>Simpan Data
+                </button>
+                <a href="@Url.Action("Index", "BarangMasuk")" class="btn-secondary flex-1 text-center">
+                    <i class="fas fa-times mr-2"></i>Batal
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        document.getElementById('selectBarang').addEventListener('change', function() {
+            const selectedOption = this.options[this.selectedIndex];
+            const satuan = selectedOption.getAttribute('data-satuan') || 'pcs';
+            document.getElementById('satuanDisplay').textContent = satuan;
+        });
+    </script>
+}

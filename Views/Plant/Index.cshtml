@@ -1,0 +1,106 @@
+@model IEnumerable<StokApp.Models.Plant>
+@{
+    ViewData["Title"] = "Manajemen Plant & Area";
+    ViewData["Subtitle"] = "Kelola data lokasi produksi";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+    <div class="lg:col-span-2">
+        <div class="flex justify-between items-center mb-6">
+            <div>
+                <h3 class="text-xl font-semibold text-gray-700">Daftar Plant</h3>
+                <p class="text-sm text-gray-500">Total: @Model.Count() plant</p>
+            </div>
+            @if (ViewBag.UserRole == "Admin")
+            {
+                <a href="@Url.Action("CreatePlant", "Plant")" class="btn-primary">
+                    <i class="fas fa-plus mr-2"></i>Tambah Plant
+                </a>
+            }
+        </div>
+
+        <div class="space-y-4">
+            @foreach (var plant in Model)
+            {
+                <div class="card border-l-4 border-blue-500 hover:shadow-2xl transition-all">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center space-x-4">
+                            <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-4 text-white">
+                                <i class="fas fa-industry text-3xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xl font-bold text-gray-800">@plant.Nama</h4>
+                                @if (!string.IsNullOrEmpty(plant.Deskripsi))
+                                {
+                                    <p class="text-sm text-gray-600 mt-1">@plant.Deskripsi</p>
+                                }
+                                <div class="flex items-center space-x-4 mt-2">
+                                    <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                        <i class="fas fa-map-marked-alt mr-1"></i>
+                                        @plant.Areas.Count area
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @if (plant.Areas.Any())
+                    {
+                        <div class="border-t border-gray-200 pt-4 mt-4">
+                            <p class="text-sm font-semibold text-gray-700 mb-3">Area Produksi:</p>
+                            <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
+                                @foreach (var area in plant.Areas)
+                                {
+                                    <div class="bg-gray-50 border border-gray-200 rounded-lg p-3 hover:bg-gray-100 transition-colors">
+                                        <p class="font-medium text-gray-800 text-sm">@area.Nama</p>
+                                        @if (!string.IsNullOrEmpty(area.Deskripsi))
+                                        {
+                                            <p class="text-xs text-gray-500 mt-1">@area.Deskripsi</p>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="border-t border-gray-200 pt-4 mt-4">
+                            <p class="text-sm text-gray-500 text-center py-2">
+                                <i class="fas fa-info-circle mr-1"></i>
+                                Belum ada area
+                            </p>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Sidebar - Tambah Area -->
+    <div>
+        @if (ViewBag.UserRole == "Admin")
+        {
+            <div class="card sticky top-24">
+                <div class="border-b border-gray-200 pb-4 mb-4">
+                    <h3 class="text-lg font-bold text-gray-800">
+                        <i class="fas fa-map-marked-alt text-purple-600 mr-2"></i>
+                        Quick Add Area
+                    </h3>
+                </div>
+
+                <a href="@Url.Action("CreateArea", "Plant")" 
+                   class="block w-full bg-gradient-to-r from-purple-500 to-purple-600 text-white text-center py-3 rounded-lg hover:from-purple-600 hover:to-purple-700 transition-all shadow-lg hover:shadow-xl font-semibold">
+                    <i class="fas fa-plus-circle mr-2"></i>Tambah Area Baru
+                </a>
+
+                <div class="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
+                    <p class="text-sm text-blue-800">
+                        <i class="fas fa-info-circle mr-2"></i>
+                        <strong>Info:</strong> Area produksi harus terkait dengan plant yang sudah ada
+                    </p>
+                </div>
+            </div>
+        }
+    </div>
+</div>

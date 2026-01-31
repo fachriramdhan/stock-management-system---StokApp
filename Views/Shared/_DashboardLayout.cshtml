@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Sistem Manajemen Stok</title>
+    <link rel="stylesheet" href="~/css/output.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        .sidebar-link {
+            transition: all 0.3s ease;
+        }
+        .sidebar-link:hover {
+            background: linear-gradient(90deg, #2563eb 0%, #3b82f6 100%);
+            transform: translateX(5px);
+        }
+        .sidebar-link.active {
+            background: linear-gradient(90deg, #2563eb 0%, #3b82f6 100%);
+            border-left: 4px solid #60a5fa;
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        @@keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Prevent blank page */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background-color: #f9fafb;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Sidebar -->
+    <div class="fixed inset-y-0 left-0 w-64 bg-gradient-to-b from-gray-900 to-gray-800 text-white shadow-2xl z-50">
+        <!-- Logo & Title -->
+        <div class="p-6 border-b border-gray-700">
+            <div class="flex items-center space-x-3">
+                <div class="bg-blue-600 rounded-lg p-2">
+                    <i class="fas fa-warehouse text-2xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold">Stok Management</h1>
+                    <p class="text-xs text-gray-400">Digital Transformation 4.0</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- User Info -->
+        <div class="p-4 border-b border-gray-700 bg-gray-800/50">
+            <div class="flex items-center space-x-3">
+                <div class="bg-blue-600 rounded-full w-10 h-10 flex items-center justify-center">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div>
+                    <p class="font-semibold">@(ViewBag.Username ?? "User")</p>
+                    <p class="text-xs text-gray-400">
+                        <i class="fas fa-circle text-green-500 text-xs"></i> @(ViewBag.UserRole ?? "Role")
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="p-4 space-y-2 overflow-y-auto" style="max-height: calc(100vh - 250px);">
+            <a href="/Dashboard" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg text-gray-300">
+                <i class="fas fa-home w-5"></i>
+                <span>Dashboard</span>
+            </a>
+
+            <!-- Master Data -->
+            <div class="pt-4 pb-2">
+                <p class="text-xs text-gray-500 uppercase tracking-wider px-3">Master Data</p>
+            </div>
+            
+            <a href="/Barang" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg text-gray-300">
+                <i class="fas fa-boxes w-5"></i>
+                <span>Barang</span>
+            </a>
+            
+            <a href="/Kategori" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg text-gray-300">
+                <i class="fas fa-tags w-5"></i>
+                <span>Kategori</span>
+            </a>
+            
+            <a href="/Plant" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg text-gray-300">
+                <i class="fas fa-industry w-5"></i>
+                <span>Plant & Area</span>
+            </a>
+
+            <!-- Transaksi -->
+            <div class="pt-4 pb-2">
+                <p class="text-xs text-gray-500 uppercase tracking-wider px-3">Transaksi</p>
+            </div>
+            
+            <a href="/BarangMasuk" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg text-gray-300">
+                <i class="fas fa-arrow-down w-5"></i>
+                <span>Barang Masuk</span>
+            </a>
+            
+            <a href="/BarangKeluar" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg text-gray-300">
+                <i class="fas fa-arrow-up w-5"></i>
+                <span>Barang Keluar</span>
+            </a>
+
+            <!-- Monitoring -->
+            <div class="pt-4 pb-2">
+                <p class="text-xs text-gray-500 uppercase tracking-wider px-3">Monitoring</p>
+            </div>
+            
+            <a href="/MonitoringStok" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg text-gray-300">
+                <i class="fas fa-chart-line w-5"></i>
+                <span>Monitoring Stok</span>
+            </a>
+            
+            <a href="/Mismatch" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg text-gray-300">
+                <i class="fas fa-exclamation-triangle w-5"></i>
+                <span>Mismatch</span>
+            </a>
+            
+            <a href="/Tools" class="sidebar-link flex items-center space-x-3 p-3 rounded-lg text-gray-300">
+                <i class="fas fa-tools w-5"></i>
+                <span>Tools</span>
+            </a>
+        </nav>
+
+        <!-- Logout -->
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-700 bg-gray-800">
+            <a href="/Auth/Logout" class="flex items-center space-x-3 p-3 rounded-lg text-red-400 hover:bg-red-500/10 transition-all">
+                <i class="fas fa-sign-out-alt w-5"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="ml-64 min-h-screen">
+        <!-- Top Bar -->
+        <div class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-40">
+            <div class="px-8 py-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-800">@(ViewData["Title"] ?? "Dashboard")</h2>
+                        <p class="text-sm text-gray-500">@(ViewData["Subtitle"] ?? "")</p>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div class="text-right">
+                            <p class="text-sm font-medium text-gray-700" id="currentDate"></p>
+                            <p class="text-xs text-gray-500" id="currentTime"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alert Messages -->
+        @if (TempData["Success"] != null)
+        {
+            <div class="mx-8 mt-4 bg-green-50 border-l-4 border-green-500 p-4 rounded-r-lg shadow-sm fade-in">
+                <div class="flex items-center">
+                    <i class="fas fa-check-circle text-green-500 text-xl mr-3"></i>
+                    <p class="text-green-800 font-medium">@TempData["Success"]</p>
+                </div>
+            </div>
+        }
+
+        @if (TempData["Error"] != null)
+        {
+            <div class="mx-8 mt-4 bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg shadow-sm fade-in">
+                <div class="flex items-center">
+                    <i class="fas fa-exclamation-circle text-red-500 text-xl mr-3"></i>
+                    <p class="text-red-800 font-medium">@TempData["Error"]</p>
+                </div>
+            </div>
+        }
+
+        <!-- Page Content -->
+        <div class="p-8 fade-in">
+            @RenderBody()
+        </div>
+    </div>
+
+    <script>
+        // Prevent blank page
+        window.addEventListener('DOMContentLoaded', function() {
+            console.log('Page loaded successfully');
+        });
+
+        // Update current date and time
+        function updateDateTime() {
+            try {
+                const now = new Date();
+                const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                const dateEl = document.getElementById('currentDate');
+                const timeEl = document.getElementById('currentTime');
+                
+                if (dateEl) dateEl.textContent = now.toLocaleDateString('id-ID', options);
+                if (timeEl) timeEl.textContent = now.toLocaleTimeString('id-ID');
+            } catch (e) {
+                console.error('DateTime update error:', e);
+            }
+        }
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
+
+        // Active menu highlight
+        try {
+            const currentPath = window.location.pathname;
+            document.querySelectorAll('.sidebar-link').forEach(link => {
+                const href = link.getAttribute('href');
+                if (href && currentPath.includes(href.split('/')[1])) {
+                    link.classList.add('active');
+                }
+            });
+        } catch (e) {
+            console.error('Menu highlight error:', e);
+        }
+
+        // Auto-hide alerts after 5 seconds
+        setTimeout(() => {
+            try {
+                const alerts = document.querySelectorAll('.fade-in');
+                alerts.forEach(alert => {
+                    if (alert.classList.contains('bg-green-50') || alert.classList.contains('bg-red-50')) {
+                        alert.style.transition = 'opacity 0.5s';
+                        alert.style.opacity = '0';
+                        setTimeout(() => alert.remove(), 500);
+                    }
+                });
+            } catch (e) {
+                console.error('Alert hide error:', e);
+            }
+        }, 5000);
+    </script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
