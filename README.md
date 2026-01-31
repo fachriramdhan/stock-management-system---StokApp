@@ -116,55 +116,49 @@ Setelah menggunakan sistem:
 
 ---
 
-## 🏗 System Architecture
-
-```mermaid
 flowchart LR
-    %% =========================
-    %% Row 1
-    %% =========================
-    subgraph Presentation["🖥 Presentation Layer"]
-        V["Views (.cshtml)"]
-        L["Layouts"]
-        P["Partials"]
-        A["Assets (CSS / JS)"]
+    %% ===== ROW 1 =====
+    subgraph PL["🖥 Presentation Layer"]
+        direction LR
+        V[Views (.cshtml)]
+        L[Layouts]
+        P[Partials]
+        A[Assets<br/>(CSS / JS)]
+
         V --> L --> P --> A
     end
 
-    subgraph Business["⚙️ Business Logic Layer"]
-        C["Controllers"]
-        S["Services"]
-        H["Helpers"]
-        F["Filters"]
+    subgraph BL["⚙️ Business Logic Layer"]
+        direction LR
+        C[Controllers]
+        S[Services]
+        H[Helpers]
+        F[Filters]
+
         C --> S --> H --> F
     end
 
-    %% =========================
-    %% Row 2
-    %% =========================
-    subgraph Data["🗄 Data Access Layer"]
-        M["Models"]
-        D["DbContext"]
-        R["Repository"]
-        M --> D --> R
+    %% ===== ROW 2 =====
+    subgraph DAL["🗄 Data Access Layer"]
+        direction LR
+        M[Models]
+        D[DbContext]
+        R[Repository]
+        DB[(MySQL 8.0)]
+
+        M --> D --> R --> DB
     end
 
-    DB[(🛢 MySQL 8.0)]
-
-    %% =========================
-    %% Antar Baris
-    %% =========================
+    %% CONNECTION ANTAR BARIS
     A --> C
     F --> M
-    R --> DB
 
-    %% =========================
-    %% Styling
-    %% =========================
-    style Presentation fill:#E3F2FD,stroke:#1E88E5,stroke-width:1px
-    style Business fill:#E8F5E9,stroke:#43A047,stroke-width:1px
-    style Data fill:#FFF3E0,stroke:#FB8C00,stroke-width:1px
-    style DB fill:#FCE4EC,stroke:#D81B60,stroke-width:1px
+    %% ===== STYLING =====
+    style PL fill:#e3f2fd,stroke:#1e88e5,stroke-width:2px
+    style BL fill:#e8f5e9,stroke:#43a047,stroke-width:2px
+    style DAL fill:#fff3e0,stroke:#fb8c00,stroke-width:2px
+
+    style DB fill:#fdecea,stroke:#e53935,stroke-width:2px
 ```
 
 ---
