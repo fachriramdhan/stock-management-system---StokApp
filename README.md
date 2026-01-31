@@ -115,7 +115,9 @@ Setelah menggunakan sistem:
 - **Git** - Version control
 
 ---
+## 🏗 System Architecture
 
+```mermaid
 flowchart LR
     %% ===== ROW 1 =====
     subgraph PL["🖥 Presentation Layer"]
