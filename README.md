@@ -411,15 +411,15 @@ Barang Keluar → Tujuan: Replace
 *Manajemen barang dengan visual status stok*
 
 ### 4. Barang Masuk
-![Barang Masuk](screenshots/barang-masuk.png)
+![Barang Masuk](screenshots/barangmasuk.png)
 *Form input barang masuk dengan validation*
 
 ### 5. Barang Keluar
-![Barang Keluar](screenshots/barang-keluar.png)
+![Barang Keluar](screenshots/barangkeluar.png)
 *Form input barang keluar dengan stok checking*
 
 ### 6. Monitoring Stok
-![Monitoring Stok](screenshots/monitoring-stok.png)
+![Monitoring Stok](screenshots/monitoring.png)
 *Monitoring stok dengan color-coded status*
 
 ### 7. Mismatch Detection
