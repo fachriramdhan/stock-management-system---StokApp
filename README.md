@@ -121,7 +121,7 @@ Setelah menggunakan sistem:
 ```mermaid
 flowchart LR
     %% =========================
-    %% Presentation Layer
+    %% Row 1
     %% =========================
     subgraph Presentation["🖥 Presentation Layer"]
         V["Views (.cshtml)"]
@@ -131,9 +131,6 @@ flowchart LR
         V --> L --> P --> A
     end
 
-    %% =========================
-    %% Business Logic Layer
-    %% =========================
     subgraph Business["⚙️ Business Logic Layer"]
         C["Controllers"]
         S["Services"]
@@ -143,7 +140,7 @@ flowchart LR
     end
 
     %% =========================
-    %% Data Access Layer
+    %% Row 2
     %% =========================
     subgraph Data["🗄 Data Access Layer"]
         M["Models"]
@@ -152,17 +149,22 @@ flowchart LR
         M --> D --> R
     end
 
-    %% =========================
-    %% Database
-    %% =========================
     DB[(🛢 MySQL 8.0)]
 
     %% =========================
-    %% Flow Antar Layer (Zig-Zag)
+    %% Antar Baris
     %% =========================
     A --> C
     F --> M
     R --> DB
+
+    %% =========================
+    %% Styling
+    %% =========================
+    style Presentation fill:#E3F2FD,stroke:#1E88E5,stroke-width:1px
+    style Business fill:#E8F5E9,stroke:#43A047,stroke-width:1px
+    style Data fill:#FFF3E0,stroke:#FB8C00,stroke-width:1px
+    style DB fill:#FCE4EC,stroke:#D81B60,stroke-width:1px
 ```
 
 ---
