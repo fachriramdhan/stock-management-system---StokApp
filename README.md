@@ -7,8 +7,6 @@
 ![MySQL](https://img.shields.io/badge/MySQL-8.0-orange.svg)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.x-38B2AC.svg)
 
-**Sistem manajemen stok barang dan tools otomasi untuk lingkungan manufaktur dengan tracking OEE (Overall Equipment Effectiveness)**
-
 [Demo](#demo) • [Fitur](#-fitur-utama) • [Instalasi](#-instalasi) • [Dokumentasi](#-dokumentasi)
 
 </div>
