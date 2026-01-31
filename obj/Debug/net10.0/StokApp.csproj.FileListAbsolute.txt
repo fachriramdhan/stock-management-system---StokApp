@@ -351,5 +351,4 @@
 /Applications/MAMP/htdocs/StokManagementSystem/StokApp/obj/Debug/net10.0/StokApp.pdb
 /Applications/MAMP/htdocs/StokManagementSystem/StokApp/obj/Debug/net10.0/StokApp.genruntimeconfig.cache
 /Applications/MAMP/htdocs/StokManagementSystem/StokApp/obj/Debug/net10.0/ref/StokApp.dll
-/Applications/MAMP/htdocs/StokManagementSystem/StokApp/obj/Debug/net10.0/StokApp.sourcelink.json
 /Applications/MAMP/htdocs/StokManagementSystem/StokApp/obj/Debug/net10.0/compressed/vcz0n7pbf8-{0}-dktswajam5-dktswajam5.gz

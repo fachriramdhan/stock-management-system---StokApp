@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("StokApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9125d2ab13ae9968fecc85cf2aea0cd627045dcc")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f66b58d52bf2dc555e53e6dfbccec09baa9f7fdc")]
 [assembly: System.Reflection.AssemblyProductAttribute("StokApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("StokApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
