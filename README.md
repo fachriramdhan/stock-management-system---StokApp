@@ -118,37 +118,38 @@ Setelah menggunakan sistem:
 
 ## 🏗 System Architecture
 
-## 🏗 System Architecture
-
 ```mermaid
 flowchart LR
     %% =========================
     %% Presentation Layer
     %% =========================
     subgraph Presentation["🖥 Presentation Layer"]
-        P1["Views (.cshtml)"]
-        P2["Layouts"]
-        P3["Partials"]
-        P4["Assets (CSS / JS)"]
+        V["Views (.cshtml)"]
+        L["Layouts"]
+        P["Partials"]
+        A["Assets (CSS / JS)"]
+        V --> L --> P --> A
     end
 
     %% =========================
     %% Business Logic Layer
     %% =========================
     subgraph Business["⚙️ Business Logic Layer"]
-        B1["Controllers"]
-        B2["Services"]
-        B3["Helpers"]
-        B4["Filters"]
+        C["Controllers"]
+        S["Services"]
+        H["Helpers"]
+        F["Filters"]
+        C --> S --> H --> F
     end
 
     %% =========================
     %% Data Access Layer
     %% =========================
     subgraph Data["🗄 Data Access Layer"]
-        D1["Models"]
-        D2["DbContext"]
-        D3["Repository"]
+        M["Models"]
+        D["DbContext"]
+        R["Repository"]
+        M --> D --> R
     end
 
     %% =========================
@@ -157,13 +158,11 @@ flowchart LR
     DB[(🛢 MySQL 8.0)]
 
     %% =========================
-    %% Zig-Zag Flow
+    %% Flow Antar Layer (Zig-Zag)
     %% =========================
-    P1 --> P2 --> P3 --> P4
-    P4 --> B4 --> B3 --> B2 --> B1
-    B1 --> D1 --> D2 --> D3
-    D3 --> DB
-
+    A --> C
+    F --> M
+    R --> DB
 ```
 
 ---
