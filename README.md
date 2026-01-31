@@ -115,22 +115,31 @@ Setelah menggunakan sistem:
 - **Git** - Version control
 
 ---
-## 🏗 System Architecture
+
+# 🏗 System Architecture
+
+Arsitektur sistem ini menggunakan **Layered Architecture** untuk memastikan pemisahan tanggung jawab yang jelas, kemudahan maintenance, serta skalabilitas aplikasi di masa depan.
+
+Struktur ini umum digunakan pada aplikasi **ASP.NET MVC / Web Application** dan sangat cocok untuk sistem berskala menengah hingga besar.
+
+---
+
+## 📐 Architecture Diagram
 
 ```mermaid
 flowchart LR
-    %% ===== ROW 1 =====
-    subgraph PL["🖥 Presentation Layer"]
+    %% ================= ROW 1 =================
+    subgraph PL["Presentation Layer"]
         direction LR
         V[Views (.cshtml)]
         L[Layouts]
         P[Partials]
-        A[Assets<br/>(CSS / JS)]
+        A[Assets (CSS / JS)]
 
         V --> L --> P --> A
     end
 
-    subgraph BL["⚙️ Business Logic Layer"]
+    subgraph BL["Business Logic Layer"]
         direction LR
         C[Controllers]
         S[Services]
@@ -140,8 +149,8 @@ flowchart LR
         C --> S --> H --> F
     end
 
-    %% ===== ROW 2 =====
-    subgraph DAL["🗄 Data Access Layer"]
+    %% ================= ROW 2 =================
+    subgraph DAL["Data Access Layer"]
         direction LR
         M[Models]
         D[DbContext]
@@ -151,16 +160,16 @@ flowchart LR
         M --> D --> R --> DB
     end
 
-    %% CONNECTION ANTAR BARIS
+    %% ============== CONNECTION FLOW ==========
     A --> C
     F --> M
 
-    %% ===== STYLING =====
+    %% ================= STYLING =================
     style PL fill:#e3f2fd,stroke:#1e88e5,stroke-width:2px
     style BL fill:#e8f5e9,stroke:#43a047,stroke-width:2px
     style DAL fill:#fff3e0,stroke:#fb8c00,stroke-width:2px
-
     style DB fill:#fdecea,stroke:#e53935,stroke-width:2px
+
 ```
 
 ---
