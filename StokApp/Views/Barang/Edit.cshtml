@@ -1,0 +1,108 @@
+@model StokApp.Models.Barang
+@{
+    ViewData["Title"] = "Edit Barang";
+    ViewData["Subtitle"] = "Update informasi barang";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+<div class="max-w-3xl mx-auto">
+    <div class="card">
+        <div class="border-b border-gray-200 pb-4 mb-6">
+            <h3 class="text-xl font-bold text-gray-800">
+                <i class="fas fa-edit text-blue-600 mr-2"></i>Form Edit Barang
+            </h3>
+        </div>
+
+        <form method="post" asp-action="Edit" asp-controller="Barang">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="Id" />
+            
+            <div class="space-y-6">
+                <!-- Nama Barang -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        Nama Barang <span class="text-red-500">*</span>
+                    </label>
+                    <input type="text" 
+                           asp-for="Nama" 
+                           class="input-field" 
+                           required>
+                    <span asp-validation-for="Nama" class="text-red-500 text-sm"></span>
+                </div>
+
+                <!-- Kategori -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        Kategori <span class="text-red-500">*</span>
+                    </label>
+                    <select asp-for="KategoriId" class="input-field" required>
+                        <option value="">-- Pilih Kategori --</option>
+                        @foreach (var kategori in ViewBag.Kategoris)
+                        {
+                            <option value="@kategori.Id">@kategori.Nama</option>
+                        }
+                    </select>
+                    <span asp-validation-for="KategoriId" class="text-red-500 text-sm"></span>
+                </div>
+
+                <!-- Satuan -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        Satuan <span class="text-red-500">*</span>
+                    </label>
+                    <select asp-for="Satuan" class="input-field" required>
+                        <option value="pcs">pcs (pieces)</option>
+                        <option value="unit">unit</option>
+                        <option value="meter">meter</option>
+                        <option value="kg">kg (kilogram)</option>
+                        <option value="liter">liter</option>
+                        <option value="set">set</option>
+                        <option value="box">box</option>
+                        <option value="roll">roll</option>
+                    </select>
+                    <span asp-validation-for="Satuan" class="text-red-500 text-sm"></span>
+                </div>
+
+                <!-- Minimum Stok -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        Minimum Stok <span class="text-red-500">*</span>
+                    </label>
+                    <input type="number" 
+                           asp-for="MinimumStok" 
+                           class="input-field" 
+                           min="0"
+                           required>
+                    <span asp-validation-for="MinimumStok" class="text-red-500 text-sm"></span>
+                </div>
+
+                <!-- Keterangan -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        Keterangan
+                    </label>
+                    <textarea asp-for="Keterangan" 
+                              class="input-field" 
+                              rows="4"></textarea>
+                </div>
+
+                <!-- Buttons -->
+                <div class="flex space-x-4 pt-4 border-t border-gray-200">
+                    <button type="submit" class="btn-primary flex-1">
+                        <i class="fas fa-save mr-2"></i>Update Barang
+                    </button>
+                    <a href="@Url.Action("Index", "Barang")" class="btn-secondary flex-1 text-center">
+                        <i class="fas fa-times mr-2"></i>Batal
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"></script>
+}

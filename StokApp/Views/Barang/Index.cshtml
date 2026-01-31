@@ -1,0 +1,161 @@
+@model IEnumerable<StokApp.Models.Barang>
+@{
+    ViewData["Title"] = "Manajemen Barang";
+    ViewData["Subtitle"] = "Kelola data master barang";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+<!-- Header & Action Button -->
+<div class="flex justify-between items-center mb-6">
+    <div>
+        <h3 class="text-xl font-semibold text-gray-700">Daftar Barang</h3>
+        <p class="text-sm text-gray-500">Total: @Model.Count() barang</p>
+    </div>
+    @if (ViewBag.UserRole == "Admin")
+    {
+        <a href="/Barang/Create" 
+           class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-all shadow-md hover:shadow-lg inline-flex items-center font-semibold">
+            <i class="fas fa-plus mr-2"></i>Tambah Barang
+        </a>
+    }
+</div>
+
+<!-- Search & Filter -->
+<div class="card mb-6">
+    <div class="flex items-center space-x-4">
+        <div class="flex-1">
+            <div class="relative">
+                <input type="text" 
+                       id="searchInput" 
+                       placeholder="Cari barang..." 
+                       class="input-field pl-10"
+                       onkeyup="searchTable()">
+                <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+            </div>
+        </div>
+        <select id="kategoriFilter" class="input-field w-64" onchange="filterByKategori()">
+            <option value="">Semua Kategori</option>
+            @foreach (var kategori in Model.Select(b => b.Kategori).Distinct())
+            {
+                <option value="@kategori.Nama">@kategori.Nama</option>
+            }
+        </select>
+    </div>
+</div>
+
+<!-- Table -->
+<div class="card overflow-hidden">
+    <div class="overflow-x-auto">
+        <table class="w-full" id="barangTable">
+            <thead class="bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+                <tr>
+                    <th class="px-6 py-4 text-left text-sm font-semibold">No</th>
+                    <th class="px-6 py-4 text-left text-sm font-semibold">Nama Barang</th>
+                    <th class="px-6 py-4 text-left text-sm font-semibold">Kategori</th>
+                    <th class="px-6 py-4 text-left text-sm font-semibold">Satuan</th>
+                    <th class="px-6 py-4 text-left text-sm font-semibold">Stok</th>
+                    <th class="px-6 py-4 text-left text-sm font-semibold">Min. Stok</th>
+                    <th class="px-6 py-4 text-left text-sm font-semibold">Status</th>
+                    @if (ViewBag.UserRole == "Admin")
+                    {
+                        <th class="px-6 py-4 text-center text-sm font-semibold">Aksi</th>
+                    }
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+                @{ int no = 1; }
+                @foreach (var item in Model)
+                {
+                    var stok = item.StokBarang?.TotalStok ?? 0;
+                    var statusClass = stok == 0 ? "bg-red-100 text-red-800" : 
+                                     stok <= item.MinimumStok ? "bg-yellow-100 text-yellow-800" : 
+                                     "bg-green-100 text-green-800";
+                    var statusText = stok == 0 ? "Habis" : 
+                                    stok <= item.MinimumStok ? "Kritis" : "Aman";
+                    
+                    <tr class="table-row">
+                        <td class="px-6 py-4 text-sm text-gray-700">@no</td>
+                        <td class="px-6 py-4">
+                            <p class="font-semibold text-gray-800">@item.Nama</p>
+                            @if (!string.IsNullOrEmpty(item.Keterangan))
+                            {
+                                <p class="text-xs text-gray-500">@item.Keterangan</p>
+                            }
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-medium">
+                                @item.Kategori.Nama
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 text-sm text-gray-700">@item.Satuan</td>
+                        <td class="px-6 py-4">
+                            <span class="text-lg font-bold text-gray-800">@stok</span>
+                        </td>
+                        <td class="px-6 py-4 text-sm text-gray-700">@item.MinimumStok</td>
+                        <td class="px-6 py-4">
+                            <span class="@statusClass px-3 py-1 rounded-full text-xs font-semibold">
+                                <i class="fas fa-circle text-xs mr-1"></i>@statusText
+                            </span>
+                        </td>
+                        @if (ViewBag.UserRole == "Admin")
+                        {
+                            <td class="px-6 py-4">
+                                <div class="flex justify-center space-x-2">
+                                    <a href="@Url.Action("Edit", "Barang", new { id = item.Id })" 
+                                       class="bg-blue-500 text-white px-3 py-1 rounded-lg hover:bg-blue-600 transition-colors text-sm">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <form method="post" asp-action="Delete" asp-route-id="@item.Id" 
+                                          onsubmit="return confirm('Yakin ingin menghapus barang ini?')" 
+                                          class="inline">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" 
+                                                class="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 transition-colors text-sm">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        }
+                    </tr>
+                    no++;
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    function searchTable() {
+        const input = document.getElementById('searchInput');
+        const filter = input.value.toLowerCase();
+        const table = document.getElementById('barangTable');
+        const rows = table.getElementsByTagName('tr');
+
+        for (let i = 1; i < rows.length; i++) {
+            const row = rows[i];
+            const text = row.textContent.toLowerCase();
+            row.style.display = text.includes(filter) ? '' : 'none';
+        }
+    }
+
+    function filterByKategori() {
+        const select = document.getElementById('kategoriFilter');
+        const filter = select.value.toLowerCase();
+        const table = document.getElementById('barangTable');
+        const rows = table.getElementsByTagName('tr');
+
+        for (let i = 1; i < rows.length; i++) {
+            const row = rows[i];
+            if (filter === '') {
+                row.style.display = '';
+            } else {
+                const kategoriCell = row.cells[2];
+                const text = kategoriCell.textContent.toLowerCase();
+                row.style.display = text.includes(filter) ? '' : 'none';
+            }
+        }
+    }
+</script>
+}

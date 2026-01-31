@@ -1,0 +1,171 @@
+@model StokApp.Models.Barang
+@{
+    ViewData["Title"] = "Tambah Barang";
+    ViewData["Subtitle"] = "Tambahkan barang baru ke sistem";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+<div class="max-w-3xl mx-auto">
+    <div class="card">
+        <div class="border-b border-gray-200 pb-4 mb-6">
+            <h3 class="text-xl font-bold text-gray-800">
+                <i class="fas fa-box text-blue-600 mr-2"></i>Form Tambah Barang
+            </h3>
+        </div>
+
+        <form method="post" asp-action="Create" asp-controller="Barang" id="formBarang">
+            @Html.AntiForgeryToken()
+            
+            <div class="space-y-6">
+                <!-- Nama Barang -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        Nama Barang <span class="text-red-500">*</span>
+                    </label>
+                    <input type="text" 
+                           name="Nama"
+                           id="Nama"
+                           class="input-field" 
+                           placeholder="Contoh: PLC Siemens S7-1200"
+                           required>
+                    <span class="text-red-500 text-sm" id="errorNama"></span>
+                </div>
+
+                <!-- Kategori -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        Kategori <span class="text-red-500">*</span>
+                    </label>
+                    <select name="KategoriId" 
+                            id="KategoriId"
+                            class="input-field" 
+                            required>
+                        <option value="">-- Pilih Kategori --</option>
+                        @foreach (var kategori in ViewBag.Kategoris)
+                        {
+                            <option value="@kategori.Id">@kategori.Nama</option>
+                        }
+                    </select>
+                    <span class="text-red-500 text-sm" id="errorKategori"></span>
+                </div>
+
+                <!-- Satuan -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        Satuan <span class="text-red-500">*</span>
+                    </label>
+                    <select name="Satuan" 
+                            id="Satuan"
+                            class="input-field" 
+                            required>
+                        <option value="">-- Pilih Satuan --</option>
+                        <option value="pcs">pcs (pieces)</option>
+                        <option value="unit">unit</option>
+                        <option value="meter">meter</option>
+                        <option value="kg">kg (kilogram)</option>
+                        <option value="liter">liter</option>
+                        <option value="set">set</option>
+                        <option value="box">box</option>
+                        <option value="roll">roll</option>
+                    </select>
+                    <span class="text-red-500 text-sm" id="errorSatuan"></span>
+                </div>
+
+                <!-- Minimum Stok -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        Minimum Stok <span class="text-red-500">*</span>
+                    </label>
+                    <input type="number" 
+                           name="MinimumStok"
+                           id="MinimumStok"
+                           class="input-field" 
+                           min="0"
+                           value="0"
+                           placeholder="Contoh: 10"
+                           required>
+                    <p class="text-xs text-gray-500 mt-1">
+                        <i class="fas fa-info-circle"></i> Batas minimum stok untuk peringatan
+                    </p>
+                    <span class="text-red-500 text-sm" id="errorMinStok"></span>
+                </div>
+
+                <!-- Keterangan -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        Keterangan
+                    </label>
+                    <textarea name="Keterangan" 
+                              id="Keterangan"
+                              class="input-field" 
+                              rows="4"
+                              placeholder="Deskripsi atau keterangan tambahan tentang barang..."></textarea>
+                </div>
+
+                <!-- Buttons -->
+                <div class="flex space-x-4 pt-4 border-t border-gray-200">
+                    <button type="submit" 
+                            class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-all shadow-md hover:shadow-lg flex-1 font-semibold"
+                            id="btnSubmit">
+                        <i class="fas fa-save mr-2"></i>Simpan Barang
+                    </button>
+                    <a href="/Barang" 
+                       class="bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600 transition-all flex-1 text-center font-semibold">
+                        <i class="fas fa-times mr-2"></i>Batal
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        document.getElementById('formBarang').addEventListener('submit', function(e) {
+            // Clear previous errors
+            document.querySelectorAll('[id^="error"]').forEach(el => el.textContent = '');
+            
+            let hasError = false;
+            
+            // Validate Nama
+            const nama = document.getElementById('Nama').value.trim();
+            if (!nama) {
+                document.getElementById('errorNama').textContent = 'Nama barang wajib diisi';
+                hasError = true;
+            }
+            
+            // Validate Kategori
+            const kategori = document.getElementById('KategoriId').value;
+            if (!kategori) {
+                document.getElementById('errorKategori').textContent = 'Kategori wajib dipilih';
+                hasError = true;
+            }
+            
+            // Validate Satuan
+            const satuan = document.getElementById('Satuan').value;
+            if (!satuan) {
+                document.getElementById('errorSatuan').textContent = 'Satuan wajib dipilih';
+                hasError = true;
+            }
+            
+            // Validate Minimum Stok
+            const minStok = document.getElementById('MinimumStok').value;
+            if (!minStok || minStok < 0) {
+                document.getElementById('errorMinStok').textContent = 'Minimum stok harus 0 atau lebih';
+                hasError = true;
+            }
+            
+            if (hasError) {
+                e.preventDefault();
+                alert('Mohon lengkapi semua field yang wajib diisi!');
+                return false;
+            }
+            
+            // Show loading
+            const btn = document.getElementById('btnSubmit');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Menyimpan...';
+        });
+    </script>
+}

@@ -1,0 +1,142 @@
+@model IEnumerable<StokApp.Models.Mismatch>
+@{
+    ViewData["Title"] = "Ketidaksesuaian Penggunaan";
+    ViewData["Subtitle"] = "Monitoring mismatch tujuan barang";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+<!-- Header Info -->
+<div class="card mb-6 border-l-4 border-yellow-500">
+    <div class="flex items-start space-x-4">
+        <div class="bg-yellow-100 rounded-full p-4">
+            <i class="fas fa-exchange-alt text-yellow-600 text-3xl"></i>
+        </div>
+        <div class="flex-1">
+            <h3 class="text-xl font-bold text-gray-800 mb-2">Apa itu Mismatch?</h3>
+            <p class="text-gray-600 mb-3">
+                Mismatch terjadi ketika <strong>tujuan awal barang</strong> (saat barang masuk) berbeda dengan 
+                <strong>tujuan penggunaan aktual</strong> (saat barang keluar).
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                    <p class="text-sm text-gray-700">
+                        <i class="fas fa-info-circle text-blue-600 mr-1"></i>
+                        <strong>Total Mismatch:</strong> <span class="text-2xl font-bold text-blue-600">@Model.Count()</span>
+                    </p>
+                </div>
+                <div class="bg-purple-50 border border-purple-200 rounded-lg p-3">
+                    <p class="text-sm text-gray-700">
+                        <i class="fas fa-box text-purple-600 mr-1"></i>
+                        <strong>Barang Terdampak:</strong> <span class="text-2xl font-bold text-purple-600">@Model.Select(m => m.BarangId).Distinct().Count()</span>
+                    </p>
+                </div>
+                <div class="bg-orange-50 border border-orange-200 rounded-lg p-3">
+                    <p class="text-sm text-gray-700">
+                        <i class="fas fa-calculator text-orange-600 mr-1"></i>
+                        <strong>Total Jumlah:</strong> <span class="text-2xl font-bold text-orange-600">@Model.Sum(m => m.Jumlah)</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Search -->
+<div class="card mb-6">
+    <div class="relative">
+        <input type="text" 
+               id="searchInput" 
+               placeholder="Cari mismatch..." 
+               class="input-field pl-10"
+               onkeyup="searchTable()">
+        <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+    </div>
+</div>
+
+<!-- Table -->
+<div class="card overflow-hidden">
+    <div class="overflow-x-auto">
+        <table class="w-full" id="mismatchTable">
+            <thead class="bg-gradient-to-r from-yellow-600 to-orange-600 text-white">
+                <tr>
+                    <th class="px-6 py-4 text-left text-sm font-semibold">No</th>
+                    <th class="px-6 py-4 text-left text-sm font-semibold">Waktu</th>
+                    <th class="px-6 py-4 text-left text-sm font-semibold">Barang</th>
+                    <th class="px-6 py-4 text-left text-sm font-semibold">Tujuan Awal</th>
+                    <th class="px-6 py-4 text-left text-sm font-semibold">Tujuan Aktual</th>
+                    <th class="px-6 py-4 text-left text-sm font-semibold">Lokasi</th>
+                    <th class="px-6 py-4 text-center text-sm font-semibold">Jumlah</th>
+                    <th class="px-6 py-4 text-left text-sm font-semibold">Catatan</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+                @{ int no = 1; }
+                @foreach (var item in Model)
+                {
+                    <tr class="table-row bg-yellow-50">
+                        <td class="px-6 py-4 text-sm text-gray-700">@no</td>
+                        <td class="px-6 py-4 text-sm text-gray-700">
+                            @item.WaktuKejadian.ToString("dd MMM yyyy HH:mm")
+                        </td>
+                        <td class="px-6 py-4">
+                            <p class="font-semibold text-gray-800">@item.Barang.Nama</p>
+                            <p class="text-xs text-gray-500">@item.Barang.Kategori.Nama</p>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="flex items-center space-x-2">
+                                <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-medium">
+                                    @item.TujuanAwal
+                                </span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="flex items-center space-x-2">
+                                <i class="fas fa-arrow-right text-yellow-600"></i>
+                                <span class="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-xs font-medium">
+                                    @item.TujuanAktual
+                                </span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <p class="font-semibold text-gray-800 text-sm">@item.Plant.Nama</p>
+                            <p class="text-xs text-gray-500">@item.Area.Nama</p>
+                        </td>
+                        <td class="px-6 py-4 text-center">
+                            <span class="text-lg font-bold text-yellow-600">@item.Jumlah</span>
+                        </td>
+                        <td class="px-6 py-4 text-sm text-gray-700">
+                            @(string.IsNullOrEmpty(item.Catatan) ? "-" : item.Catatan)
+                        </td>
+                    </tr>
+                    no++;
+                }
+            </tbody>
+        </table>
+
+        @if (!Model.Any())
+        {
+            <div class="text-center py-12">
+                <i class="fas fa-check-circle text-green-400 text-6xl mb-4"></i>
+                <p class="text-gray-500 text-lg font-semibold">Tidak ada mismatch!</p>
+                <p class="text-gray-400 text-sm">Semua penggunaan barang sesuai dengan tujuan awal</p>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    function searchTable() {
+        const input = document.getElementById('searchInput');
+        const filter = input.value.toLowerCase();
+        const table = document.getElementById('mismatchTable');
+        const rows = table.getElementsByTagName('tr');
+
+        for (let i = 1; i < rows.length; i++) {
+            const row = rows[i];
+            const text = row.textContent.toLowerCase();
+            row.style.display = text.includes(filter) ? '' : 'none';
+        }
+    }
+</script>
+}

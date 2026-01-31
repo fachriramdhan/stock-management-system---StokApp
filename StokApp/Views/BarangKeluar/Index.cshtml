@@ -1,0 +1,137 @@
+@model IEnumerable<StokApp.Models.BarangKeluar>
+@{
+    ViewData["Title"] = "Barang Keluar";
+    ViewData["Subtitle"] = "Riwayat barang keluar";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+<div class="flex justify-between items-center mb-6">
+    <div>
+        <h3 class="text-xl font-semibold text-gray-700">Riwayat Barang Keluar</h3>
+        <p class="text-sm text-gray-500">Total: @Model.Count() transaksi</p>
+    </div>
+    @if (ViewBag.UserRole == "Admin")
+    {
+        <a href="@Url.Action("Create", "BarangKeluar")" class="btn-primary">
+            <i class="fas fa-plus mr-2"></i>Input Barang Keluar
+        </a>
+    }
+</div>
+
+<!-- Filter Section -->
+<div class="card mb-6">
+    <form method="get" asp-action="Index" asp-controller="BarangKeluar">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Tanggal Mulai</label>
+                <input type="date" 
+                       name="startDate" 
+                       value="@Context.Request.Query["startDate"]"
+                       class="input-field">
+            </div>
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Tanggal Akhir</label>
+                <input type="date" 
+                       name="endDate" 
+                       value="@Context.Request.Query["endDate"]"
+                       class="input-field">
+            </div>
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Plant</label>
+                <select name="plantId" class="input-field">
+                    <option value="">Semua Plant</option>
+                    @foreach (var plant in ViewBag.Plants)
+                    {
+                        <option value="@plant.Id" selected="@(Context.Request.Query["plantId"] == plant.Id.ToString())">
+                            @plant.Nama
+                        </option>
+                    }
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Area</label>
+                <select name="areaId" class="input-field">
+                    <option value="">Semua Area</option>
+                    @foreach (var area in ViewBag.Areas)
+                    {
+                        <option value="@area.Id" selected="@(Context.Request.Query["areaId"] == area.Id.ToString())">
+                            @area.Nama (@area.Plant.Nama)
+                        </option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="flex space-x-3 mt-4">
+            <button type="submit" class="btn-primary">
+                <i class="fas fa-filter mr-2"></i>Filter
+            </button>
+            <a href="@Url.Action("Index", "BarangKeluar")" class="btn-secondary">
+                <i class="fas fa-redo mr-2"></i>Reset
+            </a>
+        </div>
+    </form>
+</div>
+
+<!-- Table -->
+<div class="card overflow-hidden">
+    <div class="overflow-x-auto">
+        <table class="w-full">
+            <thead class="bg-gradient-to-r from-red-600 to-rose-600 text-white">
+                <tr>
+                    <th class="px-6 py-4 text-left text-sm font-semibold">No</th>
+                    <th class="px-6 py-4 text-left text-sm font-semibold">Tanggal</th>
+                    <th class="px-6 py-4 text-left text-sm font-semibold">Barang</th>
+                    <th class="px-6 py-4 text-left text-sm font-semibold">Tujuan</th>
+                    <th class="px-6 py-4 text-left text-sm font-semibold">Plant & Area</th>
+                    <th class="px-6 py-4 text-left text-sm font-semibold">PIC</th>
+                    <th class="px-6 py-4 text-center text-sm font-semibold">Jumlah</th>
+                    <th class="px-6 py-4 text-left text-sm font-semibold">Keterangan</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+                @{ int no = 1; }
+                @if (Model != null && Model.Any())
+                {
+                    @foreach (var item in Model)
+                    {
+                        <tr class="table-row">
+                            <td class="px-6 py-4 text-sm text-gray-700">@no</td>
+                            <td class="px-6 py-4 text-sm text-gray-700">
+                                @item.Tanggal.ToString("dd MMM yyyy")
+                            </td>
+                            <td class="px-6 py-4">
+                                <p class="font-semibold text-gray-800">@(item.Barang?.Nama ?? "N/A")</p>
+                                <p class="text-xs text-gray-500">@(item.Barang?.Kategori?.Nama ?? "N/A")</p>
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-xs font-medium">
+                                    @item.TujuanPenggunaan
+                                </span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <p class="font-semibold text-gray-800">@(item.Plant?.Nama ?? "N/A")</p>
+                                <p class="text-xs text-gray-500">@(item.Area?.Nama ?? "N/A")</p>
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-700">@item.PenanggungJawab</td>
+                            <td class="px-6 py-4 text-center">
+                                <span class="text-xl font-bold text-red-600">-@item.Jumlah</span>
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-700">
+                                @(string.IsNullOrEmpty(item.Keterangan) ? "-" : item.Keterangan)
+                            </td>
+                        </tr>
+                        no++;
+                    }
+                }
+            </tbody>
+        </table>
+
+        @if (Model == null || !Model.Any())
+        {
+            <div class="text-center py-12">
+                <i class="fas fa-inbox text-gray-300 text-6xl mb-4"></i>
+                <p class="text-gray-500">Belum ada data barang keluar</p>
+            </div>
+        }
+    </div>
+</div>

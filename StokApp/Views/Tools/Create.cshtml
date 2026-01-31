@@ -1,0 +1,145 @@
+@model StokApp.Models.Tools
+@{
+    ViewData["Title"] = "Tambah Tools";
+    ViewData["Subtitle"] = "Tambahkan tools baru";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+<div class="max-w-3xl mx-auto">
+    <div class="card">
+        <div class="border-b border-gray-200 pb-4 mb-6">
+            <h3 class="text-xl font-bold text-gray-800">
+                <i class="fas fa-tools text-purple-600 mr-2"></i>Form Tambah Tools
+            </h3>
+        </div>
+
+        <form method="post" asp-action="Create" asp-controller="Tools">
+            @Html.AntiForgeryToken()
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Nama Tools -->
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        Nama Tools <span class="text-red-500">*</span>
+                    </label>
+                    <input type="text" 
+                           asp-for="Nama" 
+                           class="input-field" 
+                           placeholder="Contoh: Obeng Plus Phillips, Tang Potong 8 inch"
+                           required>
+                    <span asp-validation-for="Nama" class="text-red-500 text-sm"></span>
+                </div>
+
+                <!-- Jenis Tools -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        Jenis Tools <span class="text-red-500">*</span>
+                    </label>
+                    <select asp-for="Jenis" class="input-field" required>
+                        <option value="">-- Pilih Jenis --</option>
+                        <option value="Obeng">Obeng</option>
+                        <option value="Tang">Tang</option>
+                        <option value="Kunci">Kunci</option>
+                        <option value="Multimeter">Multimeter</option>
+                        <option value="Laptop">Laptop</option>
+                        <option value="Printer">Printer</option>
+                        <option value="Consumable Printer">Consumable Printer</option>
+                        <option value="Tool Kit">Tool Kit</option>
+                        <option value="Lainnya">Lainnya</option>
+                    </select>
+                    <span asp-validation-for="Jenis" class="text-red-500 text-sm"></span>
+                </div>
+
+                <!-- Status -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        Status <span class="text-red-500">*</span>
+                    </label>
+                    <select asp-for="Status" class="input-field" required>
+                        <option value="Available">Available</option>
+                        <option value="Dipakai">Dipakai</option>
+                        <option value="Rusak">Rusak</option>
+                    </select>
+                    <span asp-validation-for="Status" class="text-red-500 text-sm"></span>
+                </div>
+
+                <!-- Plant -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        Plant <span class="text-red-500">*</span>
+                    </label>
+                    <select asp-for="PlantId" class="input-field" required id="selectPlant">
+                        <option value="">-- Pilih Plant --</option>
+                        @foreach (var plant in ViewBag.Plants)
+                        {
+                            <option value="@plant.Id">@plant.Nama</option>
+                        }
+                    </select>
+                    <span asp-validation-for="PlantId" class="text-red-500 text-sm"></span>
+                </div>
+
+                <!-- Area (Optional) -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        Area (Opsional)
+                    </label>
+                    <select asp-for="AreaId" class="input-field" id="selectArea">
+                        <option value="">-- Pilih Area --</option>
+                        @foreach (var area in ViewBag.Areas)
+                        {
+                            <option value="@area.Id" data-plant="@area.PlantId">
+                                @area.Nama (@area.Plant.Nama)
+                            </option>
+                        }
+                    </select>
+                </div>
+
+                <!-- Keterangan -->
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        Keterangan
+                    </label>
+                    <textarea asp-for="Keterangan" 
+                              class="input-field" 
+                              rows="3"
+                              placeholder="Keterangan tambahan..."></textarea>
+                </div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="flex space-x-4 mt-6 pt-6 border-t border-gray-200">
+                <button type="submit" class="btn-primary flex-1">
+                    <i class="fas fa-save mr-2"></i>Simpan Tools
+                </button>
+                <a href="@Url.Action("Index", "Tools")" class="btn-secondary flex-1 text-center">
+                    <i class="fas fa-times mr-2"></i>Batal
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        document.getElementById('selectPlant').addEventListener('change', function() {
+            const plantId = this.value;
+            const selectArea = document.getElementById('selectArea');
+            const options = selectArea.querySelectorAll('option');
+            
+            options.forEach(option => {
+                if (option.value === '') {
+                    option.style.display = 'block';
+                } else if (option.getAttribute('data-plant') === plantId) {
+                    option.style.display = 'block';
+                } else {
+                    option.style.display = 'none';
+                }
+            });
+            
+            selectArea.value = '';
+        });
+    </script>
+}

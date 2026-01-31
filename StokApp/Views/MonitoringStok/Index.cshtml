@@ -1,0 +1,161 @@
+@model IEnumerable<StokApp.Models.StokBarang>
+@{
+    ViewData["Title"] = "Monitoring Stok";
+    ViewData["Subtitle"] = "Pantau kondisi stok barang";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+<!-- Stats Cards -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+    <div class="card bg-gradient-to-br from-red-500 to-red-600 text-white">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-red-100 text-sm">Stok Habis</p>
+                <h3 class="text-3xl font-bold">@Model.Count(s => s.TotalStok == 0)</h3>
+            </div>
+            <i class="fas fa-exclamation-circle text-4xl text-red-200"></i>
+        </div>
+    </div>
+
+    <div class="card bg-gradient-to-br from-yellow-500 to-yellow-600 text-white">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-yellow-100 text-sm">Stok Kritis</p>
+                <h3 class="text-3xl font-bold">@Model.Count(s => s.TotalStok > 0 && s.TotalStok <= s.Barang.MinimumStok)</h3>
+            </div>
+            <i class="fas fa-exclamation-triangle text-4xl text-yellow-200"></i>
+        </div>
+    </div>
+
+    <div class="card bg-gradient-to-br from-green-500 to-green-600 text-white">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-green-100 text-sm">Stok Aman</p>
+                <h3 class="text-3xl font-bold">@Model.Count(s => s.TotalStok > s.Barang.MinimumStok)</h3>
+            </div>
+            <i class="fas fa-check-circle text-4xl text-green-200"></i>
+        </div>
+    </div>
+
+    <div class="card bg-gradient-to-br from-blue-500 to-blue-600 text-white">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-blue-100 text-sm">Total Item</p>
+                <h3 class="text-3xl font-bold">@Model.Count()</h3>
+            </div>
+            <i class="fas fa-boxes text-4xl text-blue-200"></i>
+        </div>
+    </div>
+</div>
+
+<!-- Filter -->
+<div class="card mb-6">
+    <form method="get" asp-action="Index" asp-controller="MonitoringStok">
+        <div class="flex items-center space-x-4">
+            <div class="flex-1">
+                <input type="text" 
+                       id="searchInput" 
+                       placeholder="Cari barang..." 
+                       class="input-field"
+                       onkeyup="searchTable()">
+            </div>
+            <select name="kategoriId" class="input-field w-64">
+                <option value="">Semua Kategori</option>
+                @foreach (var kategori in ViewBag.Kategoris)
+                {
+                    <option value="@kategori.Id" selected="@(Context.Request.Query["kategoriId"] == kategori.Id.ToString())">
+                        @kategori.Nama
+                    </option>
+                }
+            </select>
+            <button type="submit" class="btn-primary">
+                <i class="fas fa-filter mr-2"></i>Filter
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- Table -->
+<div class="card overflow-hidden">
+    <div class="overflow-x-auto">
+        <table class="w-full" id="stokTable">
+            <thead class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
+                <tr>
+                    <th class="px-6 py-4 text-left text-sm font-semibold">No</th>
+                    <th class="px-6 py-4 text-left text-sm font-semibold">Barang</th>
+                    <th class="px-6 py-4 text-left text-sm font-semibold">Kategori</th>
+                    <th class="px-6 py-4 text-center text-sm font-semibold">Stok</th>
+                    <th class="px-6 py-4 text-center text-sm font-semibold">Min. Stok</th>
+                    <th class="px-6 py-4 text-center text-sm font-semibold">Status</th>
+                    <th class="px-6 py-4 text-center text-sm font-semibold">Progress</th>
+                    <th class="px-6 py-4 text-left text-sm font-semibold">Last Update</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+                @{ int no = 1; }
+                @foreach (var item in Model)
+                {
+                    var percentage = item.Barang.MinimumStok > 0 ? 
+                                    (item.TotalStok * 100 / item.Barang.MinimumStok) : 100;
+                    var statusClass = item.TotalStok == 0 ? "bg-red-100 text-red-800 border-red-500" :
+                                     item.TotalStok <= item.Barang.MinimumStok ? "bg-yellow-100 text-yellow-800 border-yellow-500" :
+                                     "bg-green-100 text-green-800 border-green-500";
+                    var statusText = item.TotalStok == 0 ? "HABIS" :
+                                    item.TotalStok <= item.Barang.MinimumStok ? "KRITIS" : "AMAN";
+                    var progressColor = item.TotalStok == 0 ? "bg-red-500" :
+                                       item.TotalStok <= item.Barang.MinimumStok ? "bg-yellow-500" : "bg-green-500";
+                    
+                    <tr class="table-row @(item.TotalStok == 0 ? "bg-red-50" : item.TotalStok <= item.Barang.MinimumStok ? "bg-yellow-50" : "")">
+                        <td class="px-6 py-4 text-sm text-gray-700">@no</td>
+                        <td class="px-6 py-4">
+                            <p class="font-semibold text-gray-800">@item.Barang.Nama</p>
+                            <p class="text-xs text-gray-500">@item.Barang.Satuan</p>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-medium">
+                                @item.Barang.Kategori.Nama
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 text-center">
+                            <span class="text-2xl font-bold text-gray-800">@item.TotalStok</span>
+                        </td>
+                        <td class="px-6 py-4 text-center text-gray-700 font-semibold">@item.Barang.MinimumStok</td>
+                        <td class="px-6 py-4 text-center">
+                            <span class="@statusClass px-4 py-2 rounded-full text-xs font-bold border-2 inline-block">
+                                @statusText
+                            </span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                                <div class="@progressColor h-full rounded-full transition-all duration-300" 
+                                     style="width: @(percentage > 100 ? 100 : percentage)%"></div>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1 text-center">@percentage%</p>
+                        </td>
+                        <td class="px-6 py-4 text-sm text-gray-700">
+                            @item.LastUpdated.ToString("dd MMM yyyy HH:mm")
+                        </td>
+                    </tr>
+                    no++;
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    function searchTable() {
+        const input = document.getElementById('searchInput');
+        const filter = input.value.toLowerCase();
+        const table = document.getElementById('stokTable');
+        const rows = table.getElementsByTagName('tr');
+
+        for (let i = 1; i < rows.length; i++) {
+            const row = rows[i];
+            const text = row.textContent.toLowerCase();
+            row.style.display = text.includes(filter) ? '' : 'none';
+        }
+    }
+</script>
+}
