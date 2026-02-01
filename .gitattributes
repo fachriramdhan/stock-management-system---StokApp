@@ -1,0 +1,2 @@
+wwwroot/** linguist-vendored
+*.cshtml linguist-detectable=false
